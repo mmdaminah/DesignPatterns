@@ -1,0 +1,27 @@
+services:
+  ng:
+    image : nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  app:
+    build:
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./app:/app
+  db:
+    image: mysql:latest
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: testdb
+
+volumes:
+  mysqldata:
